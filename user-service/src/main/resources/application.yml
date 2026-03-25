@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/finbot}
-    password: ${SPRING_DATASOURCE_USERNAME:finbot}
-    username: ${SPRING_DATASOURCE_PASSWORD:finbot123}
+    username: ${SPRING_DATASOURCE_USERNAME:finbot}
+    password: ${SPRING_DATASOURCE_PASSWORD:finbot123}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -15,7 +15,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
 
   data:
     redis:
