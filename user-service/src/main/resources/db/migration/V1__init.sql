@@ -16,5 +16,4 @@ CREATE TABLE transactions (
     description VARCHAR(500) ,
     transaction_date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
 );

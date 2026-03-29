@@ -16,9 +16,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class UserResponseDto implements Serializable {
-    UUID id;
+    private UUID id;
     @NotNull(message = "E-mail alanı boş olamaz")
-    String email;
-    String fullName;
-    LocalDateTime createdAt;
+    private String email;
+    private String fullName;
+    private LocalDateTime createdAt;
 }

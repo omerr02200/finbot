@@ -27,7 +27,6 @@ public class Transaction {
     @JoinColumn(name = "user_id",  nullable = false)
     private User user;
 
-    @NotNull
     @Column(nullable = false)
     private BigDecimal amount;
 
@@ -35,7 +34,6 @@ public class Transaction {
     @Column(nullable = false)
     private TransactionType type;
 
-    @NotBlank
     @Column(nullable = false)
     private String category;
 

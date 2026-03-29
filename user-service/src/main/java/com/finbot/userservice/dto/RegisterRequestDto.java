@@ -18,11 +18,11 @@ import java.io.Serializable;
 public class RegisterRequestDto implements Serializable {
     @NotNull(message = "E-mail alanı boş olamaz")
     @NotBlank(message = "Email boş olamaz")
-    String email;
+    private String email;
     @NotNull(message = "şifre alanı boş olamaz")
     @Size(message = "Şifre en az 6 karakter olmalı", min = 6)
     @NotBlank(message = "Şifre boş olamaz")
-    String password;
+    private String password;
     @NotBlank(message = "Ad soyad boş olamaz")
-    String fullName;
+    private String fullName;
 }

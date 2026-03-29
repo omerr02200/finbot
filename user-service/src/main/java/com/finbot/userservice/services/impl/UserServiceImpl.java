@@ -1,4 +1,4 @@
-package com.finbot.userservice.services;
+package com.finbot.userservice.services.impl;
 
 import com.finbot.userservice.dto.RegisterRequestDto;
 import com.finbot.userservice.dto.UserResponseDto;
@@ -6,6 +6,7 @@ import com.finbot.userservice.entities.User;
 import com.finbot.userservice.exception.EmailAlreadyExistsException;
 import com.finbot.userservice.exception.UserNotFoundException;
 import com.finbot.userservice.repositories.UserRepository;
+import com.finbot.userservice.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -22,11 +22,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotNull(message = "E-mail alanı boş olamaz")
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotNull(message = "şifre alanı boş olamaz")
     @Column(nullable = false)
     private String password;
 
