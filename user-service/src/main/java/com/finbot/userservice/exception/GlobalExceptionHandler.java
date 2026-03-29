@@ -51,13 +51,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-//    @ExceptionHandler(HttpMessageNotReadableException.class)
-//    public ResponseEntity<ErrorResponseDto> handleHttpMessageNotReadable(HttpMessageNotReadableException e) {
-//        ErrorResponseDto error = ErrorResponseDto.builder()
-//                .status(HttpStatus.BAD_REQUEST.value())
-//                .message("Geçersiz istek formatı. Lütfen gönderilen veriyi kontrol edin.")
-//                .timestamp(LocalDateTime.now())
-//                .build();
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-//    }
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponseDto> handleHttpMessageNotReadable(HttpMessageNotReadableException e) {
+        ErrorResponseDto error = ErrorResponseDto.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("Geçersiz istek formatı. Lütfen gönderilen veriyi kontrol edin.")
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
 }

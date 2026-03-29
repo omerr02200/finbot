@@ -22,7 +22,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(request));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("id/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable UUID id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }

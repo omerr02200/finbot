@@ -10,6 +10,8 @@ import com.finbot.userservice.repositories.TransactionRepository;
 import com.finbot.userservice.repositories.UserRepository;
 import com.finbot.userservice.services.TransactionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final UserRepository userRepository;
 
     @Override
+    @CacheEvict(value = "userTransactions", key = "#userId")
     public TransactionResponseDto create(UUID userId, TransactionRequestDto request) {
 
         User user = userRepository.findById(userId)
@@ -53,6 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Cacheable(value = "userTransactions", key = "#userId + '_' + #startDate + '_' + #endDate")
     public List<TransactionResponseDto> getTransactionsByDateRange(UUID userId, LocalDate startDate, LocalDate endDate) {
 
         return transactionRepository.findByUserIdAndTransactionDateBetween(userId, startDate, endDate)
@@ -62,6 +66,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Cacheable(value = "userTransactions", key = "#userId + '_' + #type")
     public List<TransactionResponseDto> getTransactionsByType(UUID userId, TransactionType type) {
         return transactionRepository.findByUserIdAndType(userId, type)
                 .stream()

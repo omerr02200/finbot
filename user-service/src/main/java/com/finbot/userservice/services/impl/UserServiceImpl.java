@@ -8,6 +8,8 @@ import com.finbot.userservice.exception.UserNotFoundException;
 import com.finbot.userservice.repositories.UserRepository;
 import com.finbot.userservice.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @CacheEvict(value = "users", key = "#result.id.toString()")
     public UserResponseDto register(RegisterRequestDto request) {
         if(userRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException("Bu email zaten kayıtlı:" + request.getEmail());
@@ -38,6 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "users", key = "#id.toString()")
     public UserResponseDto getUserById(UUID id) {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new UserNotFoundException("Kullanıcı bulunamadı" + id));
