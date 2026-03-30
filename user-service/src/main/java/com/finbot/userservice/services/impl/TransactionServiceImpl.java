@@ -1,5 +1,6 @@
 package com.finbot.userservice.services.impl;
 
+import com.finbot.userservice.dto.TransactionEventDto;
 import com.finbot.userservice.dto.TransactionRequestDto;
 import com.finbot.userservice.dto.TransactionResponseDto;
 import com.finbot.userservice.entities.Transaction;
@@ -8,6 +9,7 @@ import com.finbot.userservice.entities.User;
 import com.finbot.userservice.exception.UserNotFoundException;
 import com.finbot.userservice.repositories.TransactionRepository;
 import com.finbot.userservice.repositories.UserRepository;
+import com.finbot.userservice.services.KafkaProducerService;
 import com.finbot.userservice.services.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -28,6 +30,8 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
 
+    private final KafkaProducerService kafkaProducerService;
+
     @Override
     @CacheEvict(value = "userTransactions", key = "#userId")
     public TransactionResponseDto create(UUID userId, TransactionRequestDto request) {
@@ -45,6 +49,16 @@ public class TransactionServiceImpl implements TransactionService {
                 .build();
 
         Transaction saved = transactionRepository.save(transaction);
+
+        TransactionEventDto event = TransactionEventDto.builder()
+                .transactionId(saved.getId())
+                .userId(saved.getUser().getId())
+                .amount(saved.getAmount())
+                .type(saved.getType())
+                .category(saved.getCategory())
+                .transactionDate(saved.getTransactionDate())
+                .build();
+        kafkaProducerService.sendTransactionEvent(event);
 
         return toResponseDto(saved);
     }
