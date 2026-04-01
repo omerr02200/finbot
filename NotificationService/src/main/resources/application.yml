@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: notification-service
+
+  rabbitmq:
+    host: ${SPRNG_RABBITMQ_HOST:localhost}
+    port: 5672
+    username: ${SPRING_RABBITMQ_USERNAME:finbot}
+    password: ${SPRING_RABBITMQ_PASSWORD:finbot123}
+
+server:
+  port: 8082

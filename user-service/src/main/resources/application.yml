@@ -35,6 +35,12 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
 
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: 5672
+    username: ${SPRING_RABBITMQ_USERNAME:finbot}
+    password: ${SPRING_RABBITMQ_PASSWORD:finbot123}
+
 server:
   port: 8080
   error:
