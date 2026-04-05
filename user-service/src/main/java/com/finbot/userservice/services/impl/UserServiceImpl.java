@@ -55,6 +55,13 @@ public class UserServiceImpl implements UserService {
         return toResponseDto(user);
     }
 
+    @Override
+    public User findByUserId(UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Kullanıcı bulunamadı " + id));
+        return user;
+    }
+
     private UserResponseDto toResponseDto(User user) {
         return UserResponseDto.builder()
                 .id(user.getId())

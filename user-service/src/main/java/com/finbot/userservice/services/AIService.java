@@ -2,6 +2,7 @@ package com.finbot.userservice.services;
 
 import com.finbot.userservice.dto.TransactionResponseDto;
 import com.finbot.userservice.entities.TransactionType;
+import com.finbot.userservice.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,11 @@ public class AIService {
     private final TransactionService transactionService;
     private final GeminiService  geminiService;
 
+    private UserService userService;
+
     public String getSpendingAdvice(UUID userId) {
+        userService.findByUserId(userId);
+
         LocalDate now = LocalDate.now();
         LocalDate startDate = now.withDayOfMonth(1);
         LocalDate endDate = now.withDayOfMonth(now.lengthOfMonth());

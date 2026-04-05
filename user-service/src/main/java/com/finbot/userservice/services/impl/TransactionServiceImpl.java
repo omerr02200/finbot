@@ -1,13 +1,11 @@
 package com.finbot.userservice.services.impl;
 
 import com.finbot.userservice.config.RabbitMQConfig;
-import com.finbot.userservice.dto.NotificationDto;
-import com.finbot.userservice.dto.TransactionEventDto;
-import com.finbot.userservice.dto.TransactionRequestDto;
-import com.finbot.userservice.dto.TransactionResponseDto;
+import com.finbot.userservice.dto.*;
 import com.finbot.userservice.entities.Transaction;
 import com.finbot.userservice.entities.TransactionType;
 import com.finbot.userservice.entities.User;
+import com.finbot.userservice.exception.InvalidDateRangeException;
 import com.finbot.userservice.exception.UserNotFoundException;
 import com.finbot.userservice.repositories.TransactionRepository;
 import com.finbot.userservice.repositories.UserRepository;
@@ -35,7 +33,8 @@ import java.util.stream.Collectors;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
-    private final UserRepository userRepository;
+    // private final UserRepository userRepository;
+    private final UserServiceImpl userService;
 
     private final KafkaProducerService kafkaProducerService;
 
@@ -47,8 +46,9 @@ public class TransactionServiceImpl implements TransactionService {
     @CacheEvict(value = "userTransactions", key = "#userId")
     public TransactionResponseDto create(UUID userId, TransactionRequestDto request) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow( () -> new UserNotFoundException("Kullanıcı bulunumadı " + userId));
+//        User user = userRepository.findById(userId)
+//                .orElseThrow( () -> new UserNotFoundException("Kullanıcı bulunumadı " + userId));
+        User user = userService.findByUserId(userId);
 
         Transaction transaction = Transaction.builder()
                 .user(user)
@@ -123,6 +123,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Page<TransactionResponseDto> getUserTransactions(UUID userId, Pageable pageable) {
+
+        userService.findByUserId(userId);
+
         return transactionRepository.findByUserId(userId, pageable)
                 .map(this::toResponseDto);
     }
@@ -130,6 +133,11 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Cacheable(value = "userTransactions", key = "#userId + '_' + #startDate + '_' + #endDate")
     public List<TransactionResponseDto> getTransactionsByDateRange(UUID userId, LocalDate startDate, LocalDate endDate) {
+        userService.findByUserId(userId);
+
+        if(startDate.isAfter(endDate)) {
+            throw new InvalidDateRangeException("Başlangıç tarihi, bitiş tarihinden büyük olamaz");
+        }
 
         return transactionRepository.findByUserIdAndTransactionDateBetween(userId, startDate, endDate)
                 .stream()
@@ -140,6 +148,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Cacheable(value = "userTransactions", key = "#userId + '_' + #type")
     public List<TransactionResponseDto> getTransactionsByType(UUID userId, TransactionType type) {
+
+        userService.findByUserId(userId);
+
         return transactionRepository.findByUserIdAndType(userId, type)
                 .stream()
                 .map(this::toResponseDto)
