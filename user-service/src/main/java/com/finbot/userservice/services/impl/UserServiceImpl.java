@@ -1,9 +1,13 @@
 package com.finbot.userservice.services.impl;
 
+import com.finbot.userservice.config.JWTService;
+import com.finbot.userservice.dto.AuthResponseDto;
+import com.finbot.userservice.dto.LoginRequestDto;
 import com.finbot.userservice.dto.RegisterRequestDto;
 import com.finbot.userservice.dto.UserResponseDto;
 import com.finbot.userservice.entities.User;
 import com.finbot.userservice.exception.EmailAlreadyExistsException;
+import com.finbot.userservice.exception.InvalidCredentialsException;
 import com.finbot.userservice.exception.UserNotFoundException;
 import com.finbot.userservice.repositories.UserRepository;
 import com.finbot.userservice.services.UserService;
@@ -21,6 +25,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final JWTService jwtService;
 
     @Override
     @CacheEvict(value = "users", key = "#result.id.toString()")
@@ -60,6 +66,24 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Kullanıcı bulunamadı " + id));
         return user;
+    }
+
+    @Override
+    public AuthResponseDto login(LoginRequestDto request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("Kullanıcı bulunamadı: " + request.getEmail()));
+
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new InvalidCredentialsException("Email veya şifre hatalı");
+        }
+
+        String token = jwtService.generateToken(user.getEmail());
+
+        return AuthResponseDto.builder()
+                .token(token)
+                .email(user.getEmail())
+                .fullName(user.getFullName())
+                .build();
     }
 
     private UserResponseDto toResponseDto(User user) {

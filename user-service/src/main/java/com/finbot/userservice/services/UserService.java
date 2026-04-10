@@ -1,5 +1,7 @@
 package com.finbot.userservice.services;
 
+import com.finbot.userservice.dto.AuthResponseDto;
+import com.finbot.userservice.dto.LoginRequestDto;
 import com.finbot.userservice.dto.RegisterRequestDto;
 import com.finbot.userservice.dto.UserResponseDto;
 import com.finbot.userservice.entities.User;
@@ -15,4 +17,6 @@ public interface UserService {
     UserResponseDto getUserByEmail(String email);
 
     User findByUserId(UUID id);
+
+    AuthResponseDto login(LoginRequestDto request);
 }
