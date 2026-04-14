@@ -5,10 +5,12 @@ Microservice mimarili, AI destekli backend projesi.
 ## Teknolojiler
 - Java 21 / Spring Boot 3
 - PostgreSQL, Redis
+- Swagger Open API
+- Spring Security - JWT
 - Apache Kafka, RabbitMQ
 - Docker & Kubernetes
 - GitHub Actions (CI/CD)
-- OpenAI API
+- Gemini API
 
 ## Servisler
 - **user-service** — Kullanıcı, işlem yönetimi, AI önerileri
