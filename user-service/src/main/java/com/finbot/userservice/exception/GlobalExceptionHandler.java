@@ -26,8 +26,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleEmailAlreadyExistsException(EmailAlreadyExistsException e) {
+    @ExceptionHandler(EmailAllreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDto> handleEmailAlreadyExistsException(EmailAllreadyExistsException e) {
         ErrorResponseDto error = ErrorResponseDto.builder()
                 .status(HttpStatus.CONFLICT.value())
                 .message(e.getMessage())

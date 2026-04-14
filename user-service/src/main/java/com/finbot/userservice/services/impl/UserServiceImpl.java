@@ -6,7 +6,7 @@ import com.finbot.userservice.dto.LoginRequestDto;
 import com.finbot.userservice.dto.RegisterRequestDto;
 import com.finbot.userservice.dto.UserResponseDto;
 import com.finbot.userservice.entities.User;
-import com.finbot.userservice.exception.EmailAlreadyExistsException;
+import com.finbot.userservice.exception.EmailAllreadyExistsException;
 import com.finbot.userservice.exception.InvalidCredentialsException;
 import com.finbot.userservice.exception.UserNotFoundException;
 import com.finbot.userservice.repositories.UserRepository;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     @CacheEvict(value = "users", key = "#result.id.toString()")
     public UserResponseDto register(RegisterRequestDto request) {
         if(userRepository.existsByEmail(request.getEmail())) {
-            throw new EmailAlreadyExistsException("Bu email zaten kayıtlı:" + request.getEmail());
+            throw new EmailAllreadyExistsException("Bu email zaten kayıtlı:" + request.getEmail());
         }
 
         User user = User.builder()
