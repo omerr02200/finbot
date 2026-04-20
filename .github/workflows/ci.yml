@@ -1,0 +1,41 @@
+name: FinBot CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build and test user-service
+        working-directory: ./user-service
+        run: mvn clean test
+
+      - name: Build and test analytics-service
+        working-directory: ./analytics-service
+        run: mvn clean test
+
+      - name: Build and test notification-service
+        working-directory: ./notification-service
+        run: mvn clean test
+
+      - name: Build Docker image - user-service
+        working-directory: ./user-service
+        run: docker-build -t finbot-user-service .
+
+      - name: Build Docker image - analytics-service
+        working-directory: ./analytics-service
+        run: docker build -t finbot-analytics-service .
+
+      - name: Build Docker image - notification-service
+        working-directory: ./notification-service
+        run: docker build -t finbot-notification-service .
