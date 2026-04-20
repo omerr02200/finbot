@@ -37,9 +37,9 @@ jobs:
         run: docker build -t finbot-user-service .
 
       - name: Build Docker image - analytics-service
-        working-directory: ./analytics-service
+        working-directory: ./AnalyticsService
         run: docker build -t finbot-analytics-service .
 
       - name: Build Docker image - notification-service
-        working-directory: ./notification-service
+        working-directory: ./NotificationService
         run: docker build -t finbot-notification-service .
