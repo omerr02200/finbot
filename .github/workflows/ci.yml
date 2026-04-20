@@ -25,11 +25,11 @@ jobs:
         run: mvn clean test -Djava.version=21
 
       - name: Build and test analytics-service
-        working-directory: ./analytics-service
+        working-directory: ./AnalyticsService
         run: mvn clean test -Djava.version=21
 
       - name: Build and test notification-service
-        working-directory: ./notification-service
+        working-directory: ./NotificationService
         run: mvn clean test -Djava.version=21
 
       - name: Build Docker image - user-service
