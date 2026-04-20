@@ -34,7 +34,7 @@ jobs:
 
       - name: Build Docker image - user-service
         working-directory: ./user-service
-        run: docker-build -t finbot-user-service .
+        run: docker build -t finbot-user-service .
 
       - name: Build Docker image - analytics-service
         working-directory: ./analytics-service
