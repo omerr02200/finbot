@@ -2,7 +2,6 @@ package com.finbot.userservice.services;
 
 import com.finbot.userservice.dto.TransactionResponseDto;
 import com.finbot.userservice.entities.TransactionType;
-import com.finbot.userservice.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 public class AIService {
 
     private final TransactionService transactionService;
-    private final GeminiService  geminiService;
+    private final GeminiService geminiService;
 
     private UserService userService;
 
